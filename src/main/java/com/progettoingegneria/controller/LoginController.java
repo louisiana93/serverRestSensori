@@ -4,6 +4,7 @@ import com.progettoingegneria.entity.Utente;
 import com.progettoingegneria.service.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,11 @@ public class LoginController {
 
     @Autowired
     private UtenteService utenteService;
+
+    @InitBinder
+    public void myInitBinder(WebDataBinder binder){
+        binder.setDisallowedFields("utenteId");
+    }
 
     /**
      * Per inserire un utente nel db, si aspetta in input un json
