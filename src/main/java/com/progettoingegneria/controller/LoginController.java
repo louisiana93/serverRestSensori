@@ -40,7 +40,7 @@ public class LoginController {
     public List<Utente> getListaUtenti() {return utenteService.getUtenti();}
 
     /**
-     * Controlla username e password di un utente. Usato per il Login Utente
+     * Usato per il Login Utente
      * @param utente
      * @return Ritorna un Utente con valorizzati il campo UserName e il campo Ruolo
      */

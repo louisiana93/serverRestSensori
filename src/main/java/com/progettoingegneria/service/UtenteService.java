@@ -23,14 +23,13 @@ public class UtenteService {
     private static final Logger logger = LoggerFactory.getLogger(UtenteService.class);
 
     /**
-     * Inserisce un Utente nel DB. Prima dell'inserimento la password viene convertita tutto in maiuscolo.
+     * Inserisce un Utente nel DB.
      * @param u oggetto della classe {@link com.progettoingegneria.entity.Utente}
      */
     public void insertUtente(Utente u){
        String pass = u.getPassword().toUpperCase();
        u.setPassword(pass);
        utenteDao.save(u);
-       logger.info("Inserito Utente: "+u.getUsername());
     }
 
     /**
@@ -81,14 +80,4 @@ public class UtenteService {
     public void deleteUtenteDB(Long idUtente){
         utenteDao.delete(idUtente);
     }
-
-    /**
-     * Metodo privato per create l'hash MD5 di una stringa.
-     * @param pass Stringa di cui generare l'hash
-     * @return digest ottenuto dalla stringa in ingresso
-     */
-    private String hashMD5(String pass) {
-        return DigestUtils.md5Hex(pass).toUpperCase();
-    }
-
 }
