@@ -42,6 +42,10 @@ public class Valore {
         this.data_acquisizione = data_acquisizione;
     }
 
+    public String toCsvLine(){
+        return idSensoreInstallato+","+valoreAcquisito+","+data_acquisizione.toString();
+    }
+
 
 //GET_SET
 

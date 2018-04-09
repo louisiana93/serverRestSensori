@@ -3,10 +3,13 @@ package com.progettoingegneria.controller;
 import com.progettoingegneria.entity.*;
 import com.progettoingegneria.service.SensoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Rest Controller per sensori, sensori installati, posizioni, adattatori e valori
@@ -220,13 +223,13 @@ public class SensoreController {
 
     /**
      * Restituisce tutti i valori presenti nel DB per un determinato Sensore Installato
-     * @param idSensore id del sensore
+     * @param idSensoreInstallato id del sensore
      * @return una lista di oggetti della classe una lista di oggetti di {@link com.progettoingegneria.entity.Valore}
      */
     @RequestMapping(value="/getValore/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Valore> getValore(@PathVariable("id") Long idSensore) {
+    public List<Valore> getValore(@PathVariable("id") Long idSensoreInstallato) {
 
-        return sensoreService.ricercaValorePerIdSensore(idSensore);
+        return sensoreService.ricercaValorePerIdSensore(idSensoreInstallato);
 
     }
 
@@ -258,6 +261,27 @@ public class SensoreController {
     }
 
 
+    @RequestMapping(value = {"/export/{idSensoreInstallato}/{limit}","/export/{idSensoreInstallato}"}, method = RequestMethod.GET, produces = "text/csv")
+    public ResponseEntity export(@PathVariable("idSensoreInstallato") Long idSensoreInstallato, @PathVariable("limit") Optional<Integer> limit){
+        StringBuilder resource = new StringBuilder();
+
+        int conta = 0;
+        for(Valore val : sensoreService.ricercaValorePerIdSensore(idSensoreInstallato)){
+            if(limit.isPresent()){
+                if(conta >= limit.get().intValue()){
+                    break;
+                }
+            }
+            resource.append(val.toCsvLine());
+            resource.append("\n");
+            conta+=1;
+        }
+
+        return ResponseEntity.ok()
+                .contentLength(resource.toString().length())
+                .contentType(MediaType.parseMediaType("text/csv"))
+                .body(resource.toString());
+    }
 
 
 
