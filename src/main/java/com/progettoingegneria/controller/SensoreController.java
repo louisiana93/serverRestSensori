@@ -278,7 +278,7 @@ public class SensoreController {
         }
 
         return ResponseEntity.ok()
-                .contentLength(resource.toString().length())
+                .contentLength(resource.length())
                 .contentType(MediaType.parseMediaType("text/csv"))
                 .body(resource.toString());
     }
